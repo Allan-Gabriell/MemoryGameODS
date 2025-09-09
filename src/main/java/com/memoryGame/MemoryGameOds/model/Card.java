@@ -1,9 +1,9 @@
 package com.memoryGame.MemoryGameOds.model;
 
 public class Card {
-    String name;
-    String description;
-    String imgUrl;
+    private String name;
+    private String description;
+    private String imgUrl;
 
     public String getName() {
         return name;

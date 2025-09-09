@@ -1,9 +1,23 @@
 package com.memoryGame.MemoryGameOds.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "player")
 public class Player {
-    String name;
-    String nacionality;
-    Integer movements;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String nacionality;
+    static Integer movements = 24;
+
+    public Player(){}
+
+    public Player(String name, String nacionality) {
+        this.name = name;
+        this.nacionality = nacionality;
+    }
 
     public String getName() {
         return name;
@@ -21,11 +35,19 @@ public class Player {
         this.nacionality = nacionality;
     }
 
-    public Integer getMovements() {
-        return movements;
+    public Long getId() {
+        return id;
     }
 
-    public void setMovements(Integer movements) {
-        this.movements = movements;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", nacionality='" + nacionality + '\'' +
+                "Movements: " + movements;
     }
 }

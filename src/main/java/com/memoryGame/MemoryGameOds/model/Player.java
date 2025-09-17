@@ -10,13 +10,16 @@ public class Player {
     private Long id;
     private String name;
     private String nacionality;
-    static Integer movements = 24;
+    private static Integer movements = 24;
+    @OneToOne(mappedBy = "player", cascade = CascadeType.ALL)
+    private Score score;
 
     public Player(){}
 
     public Player(String name, String nacionality) {
         this.name = name;
         this.nacionality = nacionality;
+        this.score = new Score(0, 0);
     }
 
     public String getName() {
@@ -43,11 +46,20 @@ public class Player {
         this.id = id;
     }
 
+    public Score getScore() {
+        return score;
+    }
+
+    public void setScore(Score score) {
+        this.score = score;
+    }
+
     @Override
     public String toString() {
         return "Player{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", nacionality='" + nacionality + '\'' +
-                "Movements: " + movements;
+                ", score=" + score;
     }
 }

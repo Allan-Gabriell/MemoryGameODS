@@ -1,6 +1,7 @@
 package com.memoryGame.MemoryGameOds;
 
 import com.memoryGame.MemoryGameOds.game.Game;
+import com.memoryGame.MemoryGameOds.repository.CardRepository;
 import com.memoryGame.MemoryGameOds.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -11,6 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MemoryGameOdsApplication implements CommandLineRunner {
 	@Autowired
 	private PlayerRepository playerRepository;
+	@Autowired
+	private CardRepository cardRepository;
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(MemoryGameOdsApplication.class, args);
@@ -18,8 +22,11 @@ public class MemoryGameOdsApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Game game = new Game(playerRepository);
+		Game game = new Game(playerRepository,  cardRepository);
 		game.newPlayer();
+		game.loadPlayer();
+//		game.newCard();
+//		game.loadCards();
 
 		System.exit(0);
 	}

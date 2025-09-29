@@ -18,7 +18,6 @@ public class CardControlle {
     private CardRepository cardRepository;
 
     @GetMapping
-    // Envia as cartas já embaralhadas para o front
     public List<CardResponseDTO> getAll() {
         List<CardResponseDTO> pairedList = cardRepository.findAll().stream()
                 .flatMap(card -> List.of(new CardResponseDTO(card), new CardResponseDTO(card)).stream())

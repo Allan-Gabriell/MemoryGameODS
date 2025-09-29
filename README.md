@@ -73,7 +73,7 @@ Em seguida, configure as seguintes variáveis no seu ambiente de execução (sej
 
 1.  **Clone o repositório:**
     ```bash
-    git clone <URL_DO_SEU_REPOSITORIO_BACKEND>
+    git clone <https://github.com/Allan-Gabriell/MemoryGameODS.git>
     cd MemoryGameOds
     ```
 

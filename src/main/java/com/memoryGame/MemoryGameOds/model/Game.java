@@ -22,6 +22,10 @@ public class Game {
     private List<Card> cards = new ArrayList<>();
     private boolean isGameActive = false;
 
+    public void startGame(){isGameActive = true;}
+
+    public void endGame(){isGameActive = false;}
+
     public void addPlayer(Player player){
         playerRepository.save(player);
     }

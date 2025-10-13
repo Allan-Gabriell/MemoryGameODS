@@ -4,6 +4,7 @@ import com.memoryGame.MemoryGameOds.DTO.CardResponseDTO;
 import com.memoryGame.MemoryGameOds.DTO.PlayerResquestDTO;
 import com.memoryGame.MemoryGameOds.model.Game;
 import com.memoryGame.MemoryGameOds.model.Player;
+import com.memoryGame.MemoryGameOds.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,14 +12,32 @@ import java.util.List;
 
 @RestController
 @RequestMapping("game")
-public class GameControlle {
+public class GameController {
     @Autowired
     private Game game;
+
+    @Autowired
+    private PlayerRepository playerRepository;
+
+    @PostMapping("/start-game")
+    public void startGame(){
+        game.startGame();
+    }
+
+    @PostMapping("/end-game")
+    public void endGame(){
+        game.endGame();
+    }
 
     @PostMapping("/add-player")
     public void addPlayer(@RequestBody PlayerResquestDTO data){
         Player player = new Player(data);
         game.addPlayer(player);
+    }
+
+    @GetMapping("/players")
+    public List<Player> getPlayers() {
+        return playerRepository.findAll();
     }
 
     @GetMapping("/load-cards")

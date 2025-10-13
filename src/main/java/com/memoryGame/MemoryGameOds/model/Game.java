@@ -40,4 +40,22 @@ public class Game {
 
         return shuffledList;
     }
+
+    public Double calculatePoints(int timeSeconds){
+        Double multiplier;
+
+        if(timeSeconds <= 30){
+            multiplier = 2.0;
+        } else if(timeSeconds <= 60){
+            multiplier = 1.5;
+        } else if(timeSeconds <= 90){
+            multiplier = 0.75;
+        } else {
+            multiplier = 0.5;
+        }
+
+        Double score = (timeSeconds * multiplier);
+        System.out.println("Score : " + score);
+        return score;
+    }
 }

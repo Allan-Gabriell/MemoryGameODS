@@ -44,4 +44,9 @@ public class GameController {
     public List<CardResponseDTO> loadCards(){
         return game.loadCards();
     }
+
+    @PostMapping("/calculate-points")
+    public Double calculatePoints(@RequestBody Integer timeSeconds){
+        return game.calculatePoints(timeSeconds);
+    }
 }

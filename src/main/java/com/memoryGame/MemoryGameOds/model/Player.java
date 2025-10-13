@@ -32,7 +32,7 @@ public class Player {
         this.name = data.name();
         this.nacionality = data.nacionality();
         this.movements = 24;
-        Score s = new Score(0, 0);
+        Score s = new Score(0.0, 0);
         s.setPlayer(this);
         this.score = s;
     }

@@ -22,19 +22,19 @@ public class Score {
     private Player player;
 
     @Column(nullable = false)
-    private Integer score = 0;
+    private Double score = 0.0;
 
     @Column(nullable = false)
     private Integer timeSeconds = 0;
 
     // Construtor personalizado
-    public Score(Integer score, Integer timeSeconds, Player player) {
+    public Score(Double score, Integer timeSeconds, Player player) {
         this.score = score;
         this.timeSeconds = timeSeconds;
         this.player = player;
     }
 
-    public Score(Integer score, Integer timeSeconds) {
+    public Score(Double score, Integer timeSeconds) {
         this.score = score;
         this.timeSeconds = timeSeconds;
     }

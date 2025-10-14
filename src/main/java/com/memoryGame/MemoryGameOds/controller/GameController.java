@@ -61,4 +61,9 @@ public class GameController {
     public List<PlayerResponseDTO> getGameData() {
         return game.getGameData();
     }
+
+    @GetMapping("/get-ranking")
+    public List<PlayerResponseDTO> getRanking() {
+        return game.getRanking();
+    }
 }

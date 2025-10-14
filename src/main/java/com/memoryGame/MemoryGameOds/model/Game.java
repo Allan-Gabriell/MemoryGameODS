@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,6 +74,15 @@ public class Game {
         players = playerRepository.findAll();
 
         return players.stream()
+                .map(PlayerResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<PlayerResponseDTO> getRanking(){
+        players = playerRepository.findAll();
+
+        return players.stream()
+                .sorted(Comparator.comparing((Player p) -> p.getScore().getScore()).reversed())
                 .map(PlayerResponseDTO::new)
                 .collect(Collectors.toList());
     }

@@ -58,4 +58,14 @@ public class Game {
         System.out.println("Score : " + score);
         return score;
     }
+
+    public Player updateMovements() {
+        Player player = playerRepository.findTopByOrderByIdDesc()
+                .orElseThrow(() -> new RuntimeException("Nenhum jogador encontrado."));
+
+        player.setMovements(player.getMovements() - 1);
+
+        return playerRepository.save(player);
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.memoryGame.MemoryGameOds.controller;
 
 import com.memoryGame.MemoryGameOds.DTO.CardResponseDTO;
+import com.memoryGame.MemoryGameOds.DTO.PlayerResponseDTO;
 import com.memoryGame.MemoryGameOds.DTO.PlayerResquestDTO;
 import com.memoryGame.MemoryGameOds.model.Game;
 import com.memoryGame.MemoryGameOds.model.Player;
@@ -49,4 +50,11 @@ public class GameController {
     public Double calculatePoints(@RequestBody Integer timeSeconds){
         return game.calculatePoints(timeSeconds);
     }
+
+    @PostMapping("/update-movements")
+    public PlayerResponseDTO updateMovements() {
+        Player updatedPlayer = game.updateMovements();
+        return new PlayerResponseDTO(updatedPlayer);
+    }
+
 }

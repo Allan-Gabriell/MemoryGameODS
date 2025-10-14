@@ -1,6 +1,7 @@
 package com.memoryGame.MemoryGameOds.model;
 
 import com.memoryGame.MemoryGameOds.DTO.CardResponseDTO;
+import com.memoryGame.MemoryGameOds.DTO.PlayerResponseDTO;
 import com.memoryGame.MemoryGameOds.repository.CardRepository;
 import com.memoryGame.MemoryGameOds.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class Game {
@@ -18,8 +20,7 @@ public class Game {
     @Autowired
     private CardRepository cardRepository;
 
-    private List<Player> players = new ArrayList<>();
-    private List<Card> cards = new ArrayList<>();
+    private List<Player> players;
     private boolean isGameActive = false;
 
     public void startGame(){isGameActive = true;}
@@ -68,4 +69,11 @@ public class Game {
         return playerRepository.save(player);
     }
 
+    public List<PlayerResponseDTO> getGameData(){
+        players = playerRepository.findAll();
+
+        return players.stream()
+                .map(PlayerResponseDTO::new)
+                .collect(Collectors.toList());
+    }
 }

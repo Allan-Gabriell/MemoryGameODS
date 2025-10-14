@@ -36,10 +36,10 @@ public class GameController {
         game.addPlayer(player);
     }
 
-    @GetMapping("/players")
-    public List<Player> getPlayers() {
-        return playerRepository.findAll();
-    }
+//    @GetMapping("/players")
+//    public List<Player> getPlayers() {
+//        return playerRepository.findAll();
+//    }
 
     @GetMapping("/load-cards")
     public List<CardResponseDTO> loadCards(){
@@ -57,4 +57,8 @@ public class GameController {
         return new PlayerResponseDTO(updatedPlayer);
     }
 
+    @GetMapping("/game-data")
+    public List<PlayerResponseDTO> getGameData() {
+        return game.getGameData();
+    }
 }

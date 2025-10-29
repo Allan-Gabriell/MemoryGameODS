@@ -8,6 +8,7 @@ import com.memoryGame.MemoryGameOds.model.Player;
 import com.memoryGame.MemoryGameOds.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -58,12 +59,17 @@ public class GameController {
     }
 
     @GetMapping("/game-data")
-    public List<PlayerResponseDTO> getGameData() {
+    public PlayerResponseDTO getGameData() {
         return game.getGameData();
     }
 
     @GetMapping("/get-ranking")
     public List<PlayerResponseDTO> getRanking() {
         return game.getRanking();
+    }
+
+    @PutMapping("/update")
+    public PlayerResponseDTO updateLastPlayer(@RequestBody Player updatedPlayerData) {
+        return game.updateLastPlayer(updatedPlayerData);
     }
 }

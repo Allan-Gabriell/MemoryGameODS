@@ -7,11 +7,14 @@ import com.memoryGame.MemoryGameOds.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import reactor.core.publisher.Flux;
+
 
 @Service
 public class Game {
@@ -70,13 +73,14 @@ public class Game {
         return playerRepository.save(player);
     }
 
-    public List<PlayerResponseDTO> getGameData(){
-        players = playerRepository.findAll();
-
-        return players.stream()
+    public PlayerResponseDTO getGameData() {
+        // Retorna o último jogador cadastrado no banco de dados
+        return playerRepository.findTopByOrderByIdDesc()
                 .map(PlayerResponseDTO::new)
-                .collect(Collectors.toList());
+                .orElseThrow(() -> new RuntimeException("Nenhum jogador encontrado."));
     }
+
+
 
     public List<PlayerResponseDTO> getRanking(){
         players = playerRepository.findAll();
@@ -86,4 +90,23 @@ public class Game {
                 .map(PlayerResponseDTO::new)
                 .collect(Collectors.toList());
     }
+
+    public PlayerResponseDTO updateLastPlayer(Player updatedData) {
+        // Busca o último jogador cadastrado
+        Player lastPlayer = playerRepository.findById(getGameData().id())
+                .orElseThrow(() -> new RuntimeException("Nenhum jogador encontrado."));
+
+        // Atualiza os campos que vieram do front-end
+        lastPlayer.setName(updatedData.getName());
+        if (updatedData.getScore() != null) {
+            lastPlayer.setScore(updatedData.getScore());
+        }
+        // Adicione outros campos que quiser atualizar, mas sem mexer em movimentos por enquanto
+
+        // Salva o jogador atualizado no banco
+        Player savedPlayer = playerRepository.save(lastPlayer);
+
+        return new PlayerResponseDTO(savedPlayer);
+    }
+
 }

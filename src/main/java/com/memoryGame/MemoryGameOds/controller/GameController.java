@@ -1,6 +1,7 @@
 package com.memoryGame.MemoryGameOds.controller;
 
 import com.memoryGame.MemoryGameOds.DTO.CardResponseDTO;
+import com.memoryGame.MemoryGameOds.DTO.MovementsRequestDTO;
 import com.memoryGame.MemoryGameOds.DTO.PlayerResponseDTO;
 import com.memoryGame.MemoryGameOds.DTO.PlayerResquestDTO;
 import com.memoryGame.MemoryGameOds.model.Game;
@@ -8,7 +9,6 @@ import com.memoryGame.MemoryGameOds.model.Player;
 import com.memoryGame.MemoryGameOds.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -47,16 +47,16 @@ public class GameController {
         return game.loadCards();
     }
 
-    @PostMapping("/calculate-points")
-    public Double calculatePoints(@RequestBody Integer timeSeconds){
-        return game.calculatePoints(timeSeconds);
-    }
+//    @PostMapping("/calculate-points")
+//    public Double calculatePoints(@RequestBody Integer timeSeconds){
+//        return game.calculatePoints(timeSeconds);
+//    }
 
     @PostMapping("/update-movements")
-    public PlayerResponseDTO updateMovements() {
-        Player updatedPlayer = game.updateMovements();
-        return new PlayerResponseDTO(updatedPlayer);
+    public void updateMovements(@RequestBody MovementsRequestDTO request) {
+        game.updateMovements(request.getIsActive(), request.getTimeSecond());
     }
+
 
     @GetMapping("/game-data")
     public PlayerResponseDTO getGameData() {

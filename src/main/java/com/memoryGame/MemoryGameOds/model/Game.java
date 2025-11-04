@@ -4,16 +4,15 @@ import com.memoryGame.MemoryGameOds.DTO.CardResponseDTO;
 import com.memoryGame.MemoryGameOds.DTO.PlayerResponseDTO;
 import com.memoryGame.MemoryGameOds.repository.CardRepository;
 import com.memoryGame.MemoryGameOds.repository.PlayerRepository;
+import com.memoryGame.MemoryGameOds.repository.ScoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import reactor.core.publisher.Flux;
 
 
 @Service
@@ -24,14 +23,50 @@ public class Game {
     @Autowired
     private CardRepository cardRepository;
 
+    @Autowired
+    private ScoreRepository scoreRepository;
+
     private List<Player> players;
     private boolean isGameActive = false;
+    private int totalTimeSeconds = 0;
 
-    public void startGame(){isGameActive = true;}
+    public void startGame() {
+        Player player = playerRepository.findTopByOrderByIdDesc()
+                .orElseThrow(() -> new RuntimeException("Nenhum jogador encontrado."));
 
-    public void endGame(){isGameActive = false;}
+        player.setMovements(24);
+        if (player.getScore() != null) {
+            player.getScore().setScore(0.0);
+            scoreRepository.save(player.getScore());
+        } else {
+            Score score = new Score(0.0, 0);
+            score.setPlayer(player);
+            player.setScore(score);
+            scoreRepository.save(score);
+        }
+        playerRepository.save(player);
+
+        totalTimeSeconds = 0;
+        isGameActive = true;
+    }
+
+    public void endGame() {
+        Player player = playerRepository.findTopByOrderByIdDesc()
+                .orElseThrow(() -> new RuntimeException("Nenhum jogador encontrado."));
+
+        if(player.getScore() != null) {
+            player.getScore().setTimeSeconds(totalTimeSeconds);
+            scoreRepository.save(player.getScore());
+        }
+
+        isGameActive = false;
+        System.exit(0);
+    }
 
     public void addPlayer(Player player){
+        if (playerRepository.findByName(player.getName()).isPresent()) {
+            throw new RuntimeException("Player with name " + player.getName() + " already exists.");
+        }
         playerRepository.save(player);
     }
 
@@ -64,17 +99,35 @@ public class Game {
         return score;
     }
 
-    public Player updateMovements() {
+    public void updateMovements(boolean isValid, int timeSeconds) {
+        totalTimeSeconds += timeSeconds;
         Player player = playerRepository.findTopByOrderByIdDesc()
                 .orElseThrow(() -> new RuntimeException("Nenhum jogador encontrado."));
 
-        player.setMovements(player.getMovements() - 1);
+        System.out.println("Player : " + player.getName() + player.getMovements());
 
-        return playerRepository.save(player);
+        if (player.getMovements() > 0) {
+            player.setMovements(player.getMovements() - 1);
+
+            if (isValid) {
+                Double calculatedScore = calculatePoints(timeSeconds);
+                Score score = player.getScore();
+                if (score == null) {
+                    score = new Score();
+                    player.setScore(score);
+                }
+                score.setScore(score.getScore() + calculatedScore);
+                scoreRepository.save(score);
+            }
+
+            playerRepository.save(player);
+        } else {
+            endGame();
+        }
+
     }
 
     public PlayerResponseDTO getGameData() {
-        // Retorna o último jogador cadastrado no banco de dados
         return playerRepository.findTopByOrderByIdDesc()
                 .map(PlayerResponseDTO::new)
                 .orElseThrow(() -> new RuntimeException("Nenhum jogador encontrado."));
@@ -92,18 +145,14 @@ public class Game {
     }
 
     public PlayerResponseDTO updateLastPlayer(Player updatedData) {
-        // Busca o último jogador cadastrado
         Player lastPlayer = playerRepository.findById(getGameData().id())
                 .orElseThrow(() -> new RuntimeException("Nenhum jogador encontrado."));
 
-        // Atualiza os campos que vieram do front-end
         lastPlayer.setName(updatedData.getName());
         if (updatedData.getScore() != null) {
             lastPlayer.setScore(updatedData.getScore());
         }
-        // Adicione outros campos que quiser atualizar, mas sem mexer em movimentos por enquanto
 
-        // Salva o jogador atualizado no banco
         Player savedPlayer = playerRepository.save(lastPlayer);
 
         return new PlayerResponseDTO(savedPlayer);

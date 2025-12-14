@@ -6,7 +6,7 @@ Este é o repositório do backend para o projeto "ODS Match", desenvolvido como 
 
 *   **Autor:** Allan Gabriel Silva de Freitas
 *   **Universidade:** Universidade Federal Rural do Semi-Árido (UFERSA)
-*   **Professor:** Dr. Alysson Figueira Milanez
+*   **Professor:** Dr. Alysson Filgueira Milanez
 *   **Disciplina:** Teste de Software
 
 ## 🎨 Frontend
@@ -24,6 +24,9 @@ A documentação detalhada do projeto, incluindo requisitos, planos de teste e d
 *   **Plano de Teste:** [**>>Clique aqui<<**](https://docs.google.com/document/d/1xr3K39St-RlHVK6wdY3AxCTjJs-uFewMOtn9JU2LY14/edit?usp=sharing)
 *   **Apresentação e Diagrama de Classes:** [**>>Clique aqui<<**](https://docs.google.com/document/d/1KWeObJJWvu-NNa5BHNTrgqaPqdFAg3jBZSIZE2Y4_b8/edit?usp=sharing)
 *   **Diagrama de Casos de Uso:** [**>>Clique aqui<<**](https://docs.google.com/document/d/1xyU6ZfBLYH74lX7jqqSoRrH7IUI0xUM08rCqiVmqpEg/edit?usp=sharing)
+
+### 📄 Artigo do projeto 
+*   **Artigo:** [clique aqui](docs/Artigo_teste_oficial.pdf)
 
 ## 🛠️ Tecnologias Utilizadas no Backend
 
